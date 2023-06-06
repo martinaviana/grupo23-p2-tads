@@ -16,8 +16,11 @@ public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySea
         }
     }
 
-    private Node<K, V> delete(K P, Node<K, V> root) {
+    private Node<K, V> delete(K P, Node<K, V> root) throws KeyNotInTree {
         Node<K, V> result = root;
+        if (find(P) == null) {
+            throw new KeyNotInTree("Provided key was not found");
+        }
         if (root.getKey().compareTo(P) == 0) {
             if (root.getLeft() == null && root.getRight() == null) {
                 result = null;

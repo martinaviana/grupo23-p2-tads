@@ -9,10 +9,26 @@ class MyBinarySearchTreeImplTest {
 
     @Test
     void add() {
+        MySearchBinaryTree<Integer, Object> tree = new MyBinarySearchTreeImpl<>();
+        tree.add(5, '5');
+        tree.add(4, '4');
+        try {
+            assertEquals('4',tree.find(4));
+        } catch (KeyNotInTree e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void remove() {
+        MySearchBinaryTree<Integer, Object> tree = new MyBinarySearchTreeImpl<>();
+        tree.add(5, "5");
+        tree.add(4, "4");
+        tree.add(3, "3");
+        tree.add(10, "10");
+        tree.remove(10);
+        assertThrows(KeyNotInTree.class, () -> tree.find(10));
+
     }
 
     @Test
