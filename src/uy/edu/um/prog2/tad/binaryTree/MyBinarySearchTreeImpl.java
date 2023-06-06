@@ -1,5 +1,7 @@
 package uy.edu.um.prog2.tad.binaryTree;
 
+import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
+import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
 public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySearchBinaryTree<K, V> {
 
     private Node<K, V> root;
@@ -62,9 +64,9 @@ public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySea
             int ValueAux = key.compareTo(root.getKey());
             if (ValueAux == 0) {
                 value = root.getValue();
-            } else if (ValueAux > 0) {
+            } else if (ValueAux > 0 && root.getRight() != null) {
                 value = findAux(key, root.getRight());
-            } else {
+            } else if(root.getLeft() != null){
                 value = findAux(key, root.getLeft());
             }
         }
@@ -73,7 +75,22 @@ public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySea
 
 
     @Override
-    public V find(K key) {
-        return findAux(key, root);
+    public V find(K key) throws KeyNotInTree {
+
+        if(root== null){
+            throw new KeyNotInTree("Tree is empty.");
+        }
+        else{
+            V value= findAux(key, root);
+            Node<K, V> node =new Node<>(key,value);
+            if (value!=null){
+                return findAux(key, root);
+            }
+            else{
+                throw new KeyNotInTree("Provided key was not found.");
+
+            }
+        }
+
     }
 }
