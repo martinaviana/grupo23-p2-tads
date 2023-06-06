@@ -13,6 +13,10 @@ public class Stack<T> implements MyStack<T> {
 
     @Override
     public T pop() throws EmptyStackException {
+        if (lista.getLast() == null) { // si la pila esta vacia
+
+            throw new EmptyStackException("esta vacia");
+        }
         try {
             int posicionremovida =lista.size() - 1;
             T temp = (T) lista.get(posicionremovida);

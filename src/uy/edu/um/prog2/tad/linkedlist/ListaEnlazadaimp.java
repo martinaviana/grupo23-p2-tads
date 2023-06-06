@@ -7,12 +7,17 @@ import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
 public class ListaEnlazadaimp<T> implements MyList<T> {
     private Nodo<T> first; // se inicializa en null first porque no hice ninguna asignacion , first=null sería lo mismo
 
+    public Nodo<T> getLast() {
+        return last;
+    }
+
     private Nodo<T> last;
     private int size = 0;
     public ListaEnlazadaimp() {
         this.first = null;
         this.last = null;
     }
+
 
     @Override
     public void add(T value) {

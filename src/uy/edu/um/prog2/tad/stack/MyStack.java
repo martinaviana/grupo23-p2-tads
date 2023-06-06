@@ -9,5 +9,7 @@ public interface MyStack<T> {
     public void push(T element);
     public boolean isEmpty ();
     public void makeEmpty() throws EmptyStackException;
+    public int size() ;
+
 
 }
