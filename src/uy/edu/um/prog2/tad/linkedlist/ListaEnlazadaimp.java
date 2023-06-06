@@ -4,29 +4,35 @@ import uy.edu.um.prog2.tad.exceptions.EmptyListException;
 import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
 
 
-public class ListaEnlazadaimp<T> implements Linkedlist<T> {
+public class ListaEnlazadaimp<T> implements MyList<T> {
     private Nodo<T> first; // se inicializa en null first porque no hice ninguna asignacion , first=null sería lo mismo
 
     private Nodo<T> last;
     private int size = 0;
+    public ListaEnlazadaimp() {
+        this.first = null;
+        this.last = null;
+    }
 
     @Override
     public void add(T value) {
+        if (value != null) {
+            Nodo<T> elementtoAdd = new Nodo<T>(value);
+            if (first == null) {
+                first = elementtoAdd;
+                last = first;
 
-        Nodo<T> elementtoAdd = new Nodo<T>(value);
-        if (first == null) {
-            first = elementtoAdd;
-            last = first;
+            } else {
 
-        } else {
+                last.setNextNode(elementtoAdd);
+                last = elementtoAdd;
 
-            last.setNextNode(elementtoAdd);
-            last = elementtoAdd;
-
+            }
+            size++;
+        } else {// si el elemento es null no lo agrego
+            System.out.println("no se puede agregar un elemento null");
         }
-        size++;
     }
-
     @Override
     public void remove(int position) throws EmptyListException, OutOfBondsException {
         Nodo<T> tempAnterior = first;
@@ -81,6 +87,26 @@ public class ListaEnlazadaimp<T> implements Linkedlist<T> {
         }
 
 
+    }
+
+    @Override
+    public boolean contains(T value) {
+        boolean contains = false;
+        Nodo <T> temp = this.first;
+
+        while (temp != null && !temp.getValue().equals(value)) {
+
+            temp = temp.getNextNode();
+
+        }
+
+        if (temp != null) { // Si no se llego al final de la lista, se encontro el valor
+
+            contains = true;
+
+        }
+
+        return contains;
     }
 
 
