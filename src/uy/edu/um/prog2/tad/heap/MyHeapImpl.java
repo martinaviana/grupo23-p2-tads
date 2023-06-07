@@ -1,123 +1,132 @@
 package uy.edu.um.prog2.tad.heap;
 
-public class MyHeapImpl<T extends Comparable<T>> implements MyHeap<T> {
 
-    private T[] values;
-    private int lastValuePosition;
-    private boolean isHeapMax;
-    private boolean isHeapMin;
+import uy.edu.um.prog2.tad.exceptions.EmptyHeapException;
 
-    public MyHeapImpl(T[] values, boolean heapMax, boolean heapMin) {
-        this.values = values;
-        this.lastValuePosition = 0;
-        this.isHeapMax = heapMax;
-        this.isHeapMin = heapMin;
+public class MyHeapImpl<K extends  Comparable<K>, T> implements MyHeap<K, T>{
+
+    private NodoH<K, T> [] array;
+
+    public boolean isHeapMin;
+    private int size;
+    public MyHeapImpl(int lenght){
+        this.isHeapMin = false;
+        this.size = 0;
+        this.array = (NodoH<K, T> []) new NodoH[lenght];
     }
-
-
-    private T getFather (int childPos){
-        return values[(childPos-1)/2];
+    @Override
+    public int size(){
+        return this.size;
     }
-
-    private int getFatherPosition (int childPos) {
-        return (childPos-1)/2;
+    public void isHeapMin(boolean isHeapMin) {
+        this.isHeapMin = isHeapMin;
     }
-
-    private T getLeftChild (int fatherPos){
-        return values[2*fatherPos + 1];
+    public void isminHeap(boolean isHeapMin){
+        this.isHeapMin = isHeapMin;
     }
+    @Override
+    public void insert(K key, T value) {
+        NodoH<K, T> newNode = new NodoH<>(key, value);
+        array[size] = newNode;
+        swapUp(newNode, size);
+        size ++;
+        if (size == array.length){
+            NodoH<K, T>[] newArray = (NodoH<K, T>[])  new NodoH[array.length*2];
+            int i = 0;
+            while (i<=size){
+                newArray[i] = array[i];
+                i++;
+            }
+            array = newArray;
+        }
 
-    private int getLeftChildPosition (int fatherPos){
-        return 2*fatherPos + 1;
     }
-
-    private T getRightChild (int fatherPos){
-        return values[2*fatherPos + 2];
+    private void swapUp(NodoH<K, T> newNode, int position) {
+        if (position == 0) {
+            return;
+        }
+        int fatherPosition = getFatherPosition(position);
+        NodoH<K, T> father = array[fatherPosition];
+        if (newNode.getKey().compareTo(father.getKey()) * heapidentificador() > 0) {
+            array[fatherPosition] = newNode;
+            array[position] = father;
+            swapUp(newNode, fatherPosition);
+        }
     }
-
-    private int getRightChildPosition (int fatherPos){
-        return 2*fatherPos + 2;
-    }
+        private int heapidentificador(){
+            if (isHeapMin){
+                return -1;
+            }
+            return 1;
+        }
 
 
     @Override
-    public void insert(T value) {
-        this.values[lastValuePosition] = value;
-        int valuePos = lastValuePosition;
-        lastValuePosition++;
-        if (isHeapMax == true) {
-            while (valuePos != 0 && value.compareTo(getFather(valuePos))>0){
-                T change = getFather(valuePos);
-                this.values[getFatherPosition(valuePos)]=value;
-                this.values[valuePos]=change;
-                valuePos = getFatherPosition(valuePos);
-            }
+    public T delete() throws EmptyHeapException {
+        if (size == 0){
+            throw new EmptyHeapException("heap vacia");
         }
-        if (isHeapMin==true) {
-            while (valuePos!=0 && value.compareTo(getFather(valuePos))<0){
-                T change = getFather(valuePos);
-                this.values[getFatherPosition(valuePos)]=value;
-                this.values[valuePos]=change;
-                valuePos = getFatherPosition(valuePos);
+        else{
+
+            T value = array[0].getValue();
+            array[0] = array[size-1];
+            array[size-1] = null;
+            size--;
+            swapDown(array[0], 0);
+            return value;
+
+        }
+
+
+    }
+    private void swapDown(NodoH<K, T> node, int position){
+        int leftChildPosition = getLeftChildPosition(position);
+        int rightChildPosition = getRightChildPosition(position);
+        if (leftChildPosition<size){
+            NodoH<K, T> leftChild = array[leftChildPosition];
+            if (leftChildPosition == size-1){
+                if(node.getKey().compareTo(leftChild.getKey())* heapidentificador() < 0) {
+                    array[leftChildPosition] = node;
+                    array[position] = leftChild;
+                }
+            }else{
+                NodoH<K, T> rightChild = array[rightChildPosition];
+                if(node.getKey().compareTo(leftChild.getKey())* heapidentificador() < 0 && node.getKey().compareTo(rightChild.getKey())* heapidentificador() < 0){
+                    if(leftChild.getKey().compareTo(rightChild.getKey())* heapidentificador() > 0){
+                        array[leftChildPosition] = node;
+                        array[position] = leftChild;
+                        swapDown(node, leftChildPosition);
+                    }else{
+                        array[rightChildPosition] = node;
+                        array[position] = rightChild;
+                        swapDown(node, rightChildPosition);
+                    }
+                }else if(node.getKey().compareTo(leftChild.getKey())* heapidentificador() < 0){
+                    array[leftChildPosition] = node;
+                    array[position] = leftChild;
+                    swapDown(node, leftChildPosition);
+                }else if (node.getKey().compareTo(rightChild.getKey())* heapidentificador() < 0){
+                    array[rightChildPosition] = node;
+                    array[position] = rightChild;
+                    swapDown(node, rightChildPosition);
+                }
             }
         }
     }
 
-    @Override
-    public T deleteAndReturn() {
-        T nodoAEliminar = values[0];
-        T nodo = values[lastValuePosition-1];
-        values[0]=nodo;
-        int valuePos = 0;
-        lastValuePosition--;
-        if(isHeapMax==true){
-            while (getLeftChild(valuePos)!=null && getRightChild(valuePos)!=null){
-                T leftChild = getLeftChild(valuePos);
-                int leftChildPosition = getLeftChildPosition(valuePos);
-                T rightChild = getRightChild(valuePos);
-                int rightChildPosition = getRightChildPosition(valuePos);
-                if (nodo.compareTo(leftChild)>0 && nodo.compareTo(rightChild)>0){
-                    break;
-                }
-                else if (leftChild.compareTo(rightChild)>0) {
-                    values[valuePos]=leftChild;
-                    values[leftChildPosition]=nodo;
-                    valuePos=leftChildPosition;
-                }
-                else if (leftChild.compareTo(rightChild)<0) {
-                    values[valuePos]=rightChild;
-                    values[rightChildPosition]=nodo;
-                    valuePos=rightChildPosition;
-                }
-            }
-        }
-        else {
-            while (getLeftChild(valuePos)!=null && getRightChild(valuePos)!=null){
-                T leftChild = getLeftChild(valuePos);
-                int leftChildPosition = getLeftChildPosition(valuePos);
-                T rightChild = getRightChild(valuePos);
-                int rightChildPosition = getRightChildPosition(valuePos);
-                if (nodo.compareTo(leftChild)<0 && nodo.compareTo(rightChild)<0){
-                    break;
-                }
-                else if (leftChild.compareTo(rightChild)<0) {
-                    values[valuePos]=leftChild;
-                    values[leftChildPosition]=nodo;
-                    valuePos=leftChildPosition;
-                }
-                else if (leftChild.compareTo(rightChild)>0) {
-                    values[valuePos]=rightChild;
-                    values[rightChildPosition]=nodo;
-                    valuePos=rightChildPosition;
-                }
-            }
-        }
-        return nodoAEliminar;
+    public MyHeapImpl(int length, boolean isHeapMin) {
+        this.array = (NodoH<K, T>[]) new NodoH[length];
+        this.isHeapMin = isHeapMin;
+    }
+    private int getFatherPosition(int position){
+        return (position-1)/2;
     }
 
+    private int getLeftChildPosition(int position){
+        return 2*position + 1;
+    }
 
-    @Override
-    public int size() {
-        return lastValuePosition;
+    private int getRightChildPosition(int position){
+        return 2*position + 2;
     }
 }
