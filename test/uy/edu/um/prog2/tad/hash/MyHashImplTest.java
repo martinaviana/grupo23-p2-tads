@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class MyHashImplTest {
 
     @Test
-    void add() {
+    void put() {
         MyHash<Integer,Integer> hash = new ClosedHashImpl<>(11,true);
         hash.put(1, 1111);
         hash.put(2, 549);
