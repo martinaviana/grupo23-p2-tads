@@ -1,10 +1,11 @@
 package uy.edu.um.prog2.tad.linkedlist;
 
-import org.junit.Test;
+import org.junit.*;
+import org.junit.jupiter.api.Test;
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
 import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ListaEnlazadaimpTest {
 
