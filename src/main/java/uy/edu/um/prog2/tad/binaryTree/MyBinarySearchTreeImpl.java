@@ -1,7 +1,7 @@
 package uy.edu.um.prog2.tad.binaryTree;
 
 import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
-import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
+
 public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySearchBinaryTree<K, V> {
 
     private Node<K, V> root;
@@ -76,6 +76,10 @@ public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySea
         return value;
     }
 
+    public Node<K, V> getRoot() {
+        return this.root;
+    }
+
 
     @Override
     public V find(K key) throws KeyNotInTree {
@@ -94,6 +98,25 @@ public class MyBinarySearchTreeImpl<K extends Comparable<K>, V> implements MySea
 
             }
         }
-
     }
+
+    @Override
+    public void visit(MySearchBinaryTreeVisitor<V> visitor) {
+        visitNode(root, visitor);
+    }
+
+    private void visitNode(Node<K, V> node, MySearchBinaryTreeVisitor<V> visitor) {
+        if (node.getRight() != null) {
+            visitNode(node.getRight(), visitor);
+        }
+
+        visitor.visit(node.getValue());
+
+        if (node.getLeft() != null) {
+            visitNode(node.getLeft(), visitor);
+        } else {
+            return;
+        }
+    }
+
 }

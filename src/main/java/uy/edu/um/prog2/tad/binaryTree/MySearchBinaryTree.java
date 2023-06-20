@@ -9,4 +9,6 @@ public interface MySearchBinaryTree<K extends Comparable<K>, V> {
     void remove(K key);
 
     V find(K key) throws KeyNotInTree;
+
+    void visit(MySearchBinaryTreeVisitor<V> visitor);
 }

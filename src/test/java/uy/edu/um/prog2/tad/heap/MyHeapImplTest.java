@@ -29,7 +29,7 @@ class MyHeapImplTest {
             throw new RuntimeException(e);
         }
         // heap min
-        MyHeap<Integer, String> heap2 = new MyHeapImpl<>(9);
+        MyHeapImpl<Integer, String> heap2 = new MyHeapImpl<>(9);
         heap2.isminHeap(true);
         heap2.insert(5, "5");
         heap2.insert(1, "1");

@@ -21,7 +21,7 @@ public class MyHeapImpl<K extends  Comparable<K>, T> implements MyHeap<K, T>{
     public void isHeapMin(boolean isHeapMin) {
         this.isHeapMin = isHeapMin;
     }
-    public void isminHeap(boolean isHeapMin){
+    protected void isminHeap(boolean isHeapMin){
         this.isHeapMin = isHeapMin;
     }
     @Override

@@ -7,5 +7,4 @@ public interface MyHeap<K extends Comparable<K>, T>{
     T delete() throws EmptyHeapException;
 
     int size();
-    void isminHeap(boolean isHeapMin);
 }

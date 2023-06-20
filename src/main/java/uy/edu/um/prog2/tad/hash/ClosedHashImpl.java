@@ -1,5 +1,10 @@
 package uy.edu.um.prog2.tad.hash;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ClosedHashImpl<Key, Value> implements MyHash<Key, Value> {
 
     private static int LINEAL_COLLISION_FUNCTION = 1;
@@ -63,6 +68,16 @@ public class ClosedHashImpl<Key, Value> implements MyHash<Key, Value> {
         return valueToReturn;
     }
 
+    @Override
+    public List<Key> keys() {
+        //return Arrays.stream(TablaHash).filter(entry -> entry != null).map(HashEntrada::getKey).collect(Collectors.toList());
+        List<Key> keys = new ArrayList<>();
+        for (HashEntrada<Key, Value> entrada : TablaHash) {
+            if (entrada != null)
+                keys.add(entrada.getKey());
+        }
+        return keys;
+    }
 
     @Override
     public int size() {
