@@ -34,11 +34,9 @@ public class MoreActiveDrivers implements TweetRecordCallback {
                         driverCounters.get(i).readTweet(record.get("text"));
                     }
                 }catch (DateTimeParseException e) {
-                    System.out.println("Exception");
                     break;
                 }
             }catch (OutOfBoundsException | EmptyListException e) {
-                System.out.println("Morimos en " + record.get("line_number"));
                 e.printStackTrace();
             }
         }
