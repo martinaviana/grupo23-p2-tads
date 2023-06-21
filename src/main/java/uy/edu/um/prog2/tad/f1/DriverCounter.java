@@ -8,7 +8,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @ToString
 public class DriverCounter {
-    @NonNull Driver driver;
+    @NonNull private Driver driver;
     long counter;
 
     public void readTweet(String tweet) {

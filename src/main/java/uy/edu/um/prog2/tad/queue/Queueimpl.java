@@ -3,12 +3,12 @@ package uy.edu.um.prog2.tad.queue;
 
 
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
-import uy.edu.um.prog2.tad.linkedlist.ListaEnlazadaimp;
-import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
+import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
+import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
 import uy.edu.um.prog2.tad.exceptions.EmptyQueueException;
 
 public class Queueimpl<T> implements MyQueue<T> {
-    private ListaEnlazadaimp lista =new ListaEnlazadaimp(); // para poder usar los métodos de lista, me creo una
+    private MyLinkedListImpl lista =new MyLinkedListImpl(); // para poder usar los métodos de lista, me creo una
     private int len;
 
     public int size(){
@@ -21,7 +21,7 @@ public class Queueimpl<T> implements MyQueue<T> {
     }
 
     @Override
-    public T dequeue() throws OutOfBondsException, EmptyListException, EmptyQueueException { //sacar
+    public T dequeue() throws OutOfBoundsException, EmptyListException, EmptyQueueException { //sacar
         if (lista.getLast() == null) { // si la queue esta vacia
 
             throw new EmptyQueueException();
@@ -33,7 +33,7 @@ public class Queueimpl<T> implements MyQueue<T> {
     }
 
     @Override
-    public T front() throws OutOfBondsException, EmptyListException, EmptyQueueException { //obtener el primero
+    public T front() throws OutOfBoundsException, EmptyListException, EmptyQueueException { //obtener el primero
         if (lista.size()==0){
             throw new EmptyQueueException();
         }

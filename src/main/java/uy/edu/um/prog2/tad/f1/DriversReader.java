@@ -1,5 +1,8 @@
 package uy.edu.um.prog2.tad.f1;
 
+import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
+import uy.edu.um.prog2.tad.linkedlist.MyList;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,10 +14,10 @@ import java.util.List;
 
 public class DriversReader {
 
-    public List<Driver> read(Reader textReader) throws IOException {
+    public MyList<Driver> read(Reader textReader) throws IOException {
         NameTokenizer nameTokenizer = new NameTokenizer(new HashSet(Arrays.asList("de")));
 
-        List<Driver> drivers = new ArrayList<>();
+        MyList<Driver> drivers = new MyLinkedListImpl<>();
         try (BufferedReader bufferedReader = new BufferedReader(textReader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null)

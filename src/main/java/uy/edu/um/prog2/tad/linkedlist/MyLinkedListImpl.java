@@ -1,10 +1,10 @@
 package uy.edu.um.prog2.tad.linkedlist;
 
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
-import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
+import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
 
 
-public class ListaEnlazadaimp<T> implements MyList<T> {
+public class MyLinkedListImpl<T> implements MyList<T> {
     private Nodo<T> first; // se inicializa en null first porque no hice ninguna asignacion , first=null sería lo mismo
 
     public Nodo<T> getLast() {
@@ -13,7 +13,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
 
     private Nodo<T> last;
     private int size = 0;
-    public ListaEnlazadaimp() {
+    public MyLinkedListImpl() {
         this.first = null;
         this.last = null;
     }
@@ -39,7 +39,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
         }
     }
     @Override
-    public void remove(int position) throws EmptyListException, OutOfBondsException {
+    public void remove(int position) throws EmptyListException, OutOfBoundsException {
         Nodo<T> tempAnterior = first;
         int p = 0;
 
@@ -49,7 +49,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
         }
 
         if (position >= this.size) {
-            throw new OutOfBondsException("posición excede tamaño");
+            throw new OutOfBoundsException("posición excede tamaño");
         } else {
             if (position == 0) {
                 first = first.getNextNode();// hago que linkedlist me apunte al segundo porque elimine el primero
@@ -74,7 +74,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
 
 
     @Override
-    public T get(int position) throws EmptyListException, OutOfBondsException {
+    public T get(int position) throws EmptyListException, OutOfBoundsException {
         int t = 0;
         Nodo<T> tempGet = first;
         if (first == null) {
@@ -86,7 +86,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
             }
             return tempGet.getValue();
         } else if (position > size - 1) {
-            throw new OutOfBondsException("Excede tamaño");
+            throw new OutOfBoundsException("Excede tamaño");
         } else {
             return null;
         }
@@ -132,7 +132,7 @@ public class ListaEnlazadaimp<T> implements MyList<T> {
                 T temp = null;
                 try {
                     temp = get(c);
-                } catch (OutOfBondsException e) {
+                } catch (OutOfBoundsException e) {
 
                 }
                 if (temp == elemento) {

@@ -3,9 +3,7 @@ package uy.edu.um.prog2.tad.queue;
 import org.junit.jupiter.api.Test;
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
 import uy.edu.um.prog2.tad.exceptions.EmptyQueueException;
-import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
-import uy.edu.um.prog2.tad.stack.MyStack;
-import uy.edu.um.prog2.tad.stack.Stack;
+import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +18,7 @@ class QueueimplTest {
         assertEquals(2, queue.size());
         try {
             assertEquals(1,queue.front());
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             throw new RuntimeException(e);
         } catch (EmptyListException e) {
             throw new RuntimeException(e);
@@ -34,7 +32,7 @@ class QueueimplTest {
         MyQueue<Integer> queue= new Queueimpl<>();
         try {
             queue.dequeue();
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             throw new RuntimeException(e);
         } catch (EmptyListException e) {
             throw new RuntimeException(e);
@@ -44,7 +42,7 @@ class QueueimplTest {
         queue.enqueue(1);
         try {
             queue.dequeue();
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             throw new RuntimeException(e);
         } catch (EmptyListException e) {
             throw new RuntimeException(e);
@@ -59,7 +57,7 @@ class QueueimplTest {
         MyQueue<Integer> queue = new Queueimpl<>();
         try {
             queue.front();
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             throw new RuntimeException(e);
         } catch (EmptyListException e) {
             throw new RuntimeException(e);
@@ -72,7 +70,7 @@ class QueueimplTest {
         queue.enqueue(3);
         try {
             assertEquals(1, queue.front());
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             throw new RuntimeException(e);
         } catch (EmptyListException e) {
             throw new RuntimeException(e);

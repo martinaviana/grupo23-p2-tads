@@ -2,12 +2,12 @@ package uy.edu.um.prog2.tad.stack;
 
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
 import uy.edu.um.prog2.tad.exceptions.EmptyStackException;
-import uy.edu.um.prog2.tad.exceptions.OutOfBondsException;
-import uy.edu.um.prog2.tad.linkedlist.ListaEnlazadaimp;
+import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
+import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
 
 public class Stack<T> implements MyStack<T> {
 
-    private ListaEnlazadaimp lista = new ListaEnlazadaimp();
+    private MyLinkedListImpl lista = new MyLinkedListImpl();
     // para poder usar los métodos de lista, me creo una
     private int size;
 
@@ -26,7 +26,7 @@ public class Stack<T> implements MyStack<T> {
 
         } catch (EmptyListException e) {
             throw new EmptyStackException("Esta vacia");
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             System.out.println("Out of bonds");
         }
 
@@ -44,7 +44,7 @@ public class Stack<T> implements MyStack<T> {
             return (T) lista.get(size-1);
         } catch (EmptyListException e) {
             throw new EmptyStackException("Esta vacia");
-        } catch (OutOfBondsException e) {
+        } catch (OutOfBoundsException e) {
             System.out.println("Out of bonds");
 
         }

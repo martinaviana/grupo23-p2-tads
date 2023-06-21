@@ -8,16 +8,17 @@ import uy.edu.um.prog2.tad.binaryTree.MySearchBinaryTree;
 import uy.edu.um.prog2.tad.binaryTree.MySearchBinaryTreeVisitor;
 import uy.edu.um.prog2.tad.binaryTree.Node;
 import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
+import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
+import uy.edu.um.prog2.tad.linkedlist.MyList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 public class UsersWithMoreTweets implements TweetRecordCallback{
     @NonNull private MySearchBinaryTree<String, UserCounter> usersTweets;
     @NonNull private int limit;
-    List<UserCounter> result;
+    MyList<UserCounter> result;
 
 
     @Override
@@ -31,8 +32,8 @@ public class UsersWithMoreTweets implements TweetRecordCallback{
         }
     }
 
-    public List<UserCounter> sortUserMoreTweets() {
-        result = new ArrayList<>();
+    public MyList<UserCounter> sortUserMoreTweets() {
+        result = new MyLinkedListImpl<>();
         final MyBinarySearchTreeImpl<Long, List<UserCounter>> countTree = new MyBinarySearchTreeImpl<>();
 
         usersTweets.visit(new MySearchBinaryTreeVisitor<UserCounter>() {
