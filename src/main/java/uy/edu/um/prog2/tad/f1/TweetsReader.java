@@ -14,8 +14,6 @@ public class TweetsReader {
     private TweetRecordCallback callback;
 
     public void read() throws IOException {
-
-        System.out.println("hola");
         String[] HEADERS = {"line_number", "user_name", "user_location", "user_description", "user_created", "user_followers", "user_friends", "user_favourites", "user_verified", "date", "text", "hashtags", "source", "is_retweet"};
 
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
@@ -25,10 +23,7 @@ public class TweetsReader {
 
         Iterable<CSVRecord> records = csvFormat.parse(reader);
 
-        for (CSVRecord record : records){
-            System.out.println("Linea: " + record.get("line_number"));
+        for (CSVRecord record : records)
             callback.execute(record);
-        }
-
     }
 }

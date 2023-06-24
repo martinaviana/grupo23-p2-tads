@@ -13,9 +13,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 @RequiredArgsConstructor
 
 public class HashtagUsageAnalyzer implements TweetRecordCallback {
@@ -73,7 +75,7 @@ public class HashtagUsageAnalyzer implements TweetRecordCallback {
 
         for (int i = 0; i < hashtagCounters.size(); i++) {
             try {
-                if (hashtagCounters.get(i).counter > maxCount) {
+                if (hashtagCounters.get(i).counter > maxCount && !hashtagCounters.get(i).hashtag.equalsIgnoreCase("F1")) {
                     maxHashtag = hashtagCounters.get(i);
                     maxCount = hashtagCounters.get(i).counter;
                 }
@@ -94,44 +96,41 @@ public class HashtagUsageAnalyzer implements TweetRecordCallback {
 
     @Override
     public void execute(CSVRecord record) {
-        System.out.println("entro al execute");
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(record.get("date"), formatter);// cambio formato fecha
 
-        LocalDateTime dateTime = LocalDateTime.parse(record.get("date"), formatter);// cambio formato fecha
-
-        if (dateTime.getMonthValue() == month && dateTime.getYear() == year && dateTime.getDayOfMonth() == day) {
-            System.out.println("entro al if");
-            String trimmedString = record.get("hashtags").replaceAll("\\[|\\]|'", "");
-            String[] hashtags = trimmedString.split("\\s*,\\s*");
+            if (dateTime.getMonthValue() == month && dateTime.getYear() == year && dateTime.getDayOfMonth() == day) {
+                String trimmedString = record.get("hashtags").replaceAll("\\[|\\]|'", "");
+                String[] hashtags = trimmedString.split("\\s*,\\s*");
 
 
-            for (String hashtag : hashtags) {
-                boolean found = false;
-                System.out.println("imprimo hashtag" + hashtag);
-                for (int i = 0; i < hashtagCounters.size(); i++) {
-                    System.out.println("entro al for");
+                for (String hashtag : hashtags) {
+                    boolean found = false;
+                    for (int i = 0; i < hashtagCounters.size(); i++) {
 
-                    try {
-                        if (hashtagCounters.get(i).hashtag.equals(hashtag)) {
-                            hashtagCounters.get(i).counter++;
-                            found = true;
-                            System.out.println("entro al if");
-                            break;
+                        try {
+                            if (hashtagCounters.get(i).hashtag.equals(hashtag)) {
+                                hashtagCounters.get(i).counter++;
+                                found = true;
+                                break;
 
+                            }
+                        } catch (EmptyListException e) {
+                            throw new RuntimeException(e);
+                        } catch (OutOfBoundsException e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch (EmptyListException e) {
-                        throw new RuntimeException(e);
-                    } catch (OutOfBoundsException e) {
-                        throw new RuntimeException(e);
                     }
-                }
-                if (!found) {
-                    HashtagCounter hashtagCounter = new HashtagCounter(hashtag);
-                    hashtagCounter.counter++;
-                    hashtagCounters.add(hashtagCounter);
-                }
+                    if (!found) {
+                        HashtagCounter hashtagCounter = new HashtagCounter(hashtag);
+                        hashtagCounter.counter++;
+                        hashtagCounters.add(hashtagCounter);
+                    }
 
 
+                }
             }
+        } catch (DateTimeParseException e) {
         }
     }
 }

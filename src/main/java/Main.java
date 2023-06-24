@@ -18,7 +18,7 @@ public class Main {
         Scanner inputReader = new Scanner(System.in);
 
         boolean quit = false;
-        while(!quit) {
+        while (!quit) {
             System.out.println("1. Listar los 10 pilotos activos en la temporada 2023 más mencionados en los tweets en un mes");
             System.out.println("2. Top 15 usuarios con más tweets");
             System.out.println("3. ");
@@ -31,11 +31,10 @@ public class Main {
             inputReader.nextLine();
             int month = 0;
             int year = 0;
-            int day=0;
-            
+            int day = 0;
+
             switch (input) {
                 case 1:
-
 
 
                     try {
@@ -43,7 +42,7 @@ public class Main {
                         year = inputReader.nextInt();
                         System.out.println("Ingrese el mes en formato MM");
                         month = inputReader.nextInt();
-                    }catch (InputMismatchException e) {
+                    } catch (InputMismatchException e) {
                         System.out.println("Revise la entrada");
                         break;
                     }
@@ -54,6 +53,18 @@ public class Main {
                     secondQuery();
                     break;
                 case 3:
+                    try {
+                        System.out.println("Ingrese el año en formato YYYY");
+                        year = inputReader.nextInt();
+                        System.out.println("Ingrese el mes en formato MM");
+                        month = inputReader.nextInt();
+                        System.out.println("Ingrese el dia en formato DD");
+                        day = inputReader.nextInt();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Revise la entrada");
+                        break;
+                    }
+                    thirdQuery(year, month , day);
                     break;
                 case 4:
                     try {
@@ -63,11 +74,12 @@ public class Main {
                         month = inputReader.nextInt();
                         System.out.println("Ingrese el dia en formato DD");
                         day = inputReader.nextInt();
-                    }catch (InputMismatchException e) {
+                    } catch (InputMismatchException e) {
                         System.out.println("Revise la entrada");
                         break;
                     }
                     fourthQuery(year, month, day);
+                    break;
                 case 5:
                     break;
                 case 6:
@@ -81,7 +93,7 @@ public class Main {
     }
 
 
-    private static void firstQuery(int year, int month)throws Exception {
+    private static void firstQuery(int year, int month) throws Exception {
         long time = System.currentTimeMillis();
 
         MyList<Driver> drivers = new DriversReader().read(new FileReader("drivers.txt"));
@@ -125,13 +137,27 @@ public class Main {
         }
 
     }
-        private static void fourthQuery(int year,int  month, int day) throws Exception {
-            Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
-            HashtagUsageAnalyzer temp =new HashtagUsageAnalyzer(year,month,day);
-            TweetsReader tweetReader = new TweetsReader(reader,temp);
-            tweetReader.read();
-            System.out.println(temp.getHashtagCounters().size());
+
+    private static void thirdQuery(int year, int month, int day) throws Exception {
+        Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
+        DifferentHashtagsInDay temp = new DifferentHashtagsInDay(new MyLinkedListImpl<>(), year, month, day);
+        TweetsReader tweetReader = new TweetsReader(reader, temp);
+        tweetReader.read();
+
+        for (int i = 0; i < temp.getHashTagCounter().size(); i++) {
+            System.out.println(temp.getHashTagCounter().get(i));
+        }
+        System.out.println(temp.getHashTags());
+    }
+
+    private static void fourthQuery(int year, int month, int day) throws Exception {
+        Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
+        HashtagUsageAnalyzer temp = new HashtagUsageAnalyzer(year, month, day);
+        TweetsReader tweetReader = new TweetsReader(reader, temp);
+        tweetReader.read();
+        System.out.println(temp.getMaxHashtag().hashtag);
 
 
-        }}
+    }
+}
 
