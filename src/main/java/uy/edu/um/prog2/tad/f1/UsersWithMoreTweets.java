@@ -7,7 +7,9 @@ import uy.edu.um.prog2.tad.binaryTree.MyBinarySearchTreeImpl;
 import uy.edu.um.prog2.tad.binaryTree.MySearchBinaryTree;
 import uy.edu.um.prog2.tad.binaryTree.MySearchBinaryTreeVisitor;
 import uy.edu.um.prog2.tad.binaryTree.Node;
+import uy.edu.um.prog2.tad.exceptions.EmptyListException;
 import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
+import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
 import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
 import uy.edu.um.prog2.tad.linkedlist.MyList;
 
@@ -34,16 +36,16 @@ public class UsersWithMoreTweets implements TweetRecordCallback{
 
     public MyList<UserCounter> sortUserMoreTweets() {
         result = new MyLinkedListImpl<>();
-        final MyBinarySearchTreeImpl<Long, List<UserCounter>> countTree = new MyBinarySearchTreeImpl<>();
+        final MyBinarySearchTreeImpl<Long, MyList<UserCounter>> countTree = new MyBinarySearchTreeImpl<>();
 
         usersTweets.visit(new MySearchBinaryTreeVisitor<UserCounter>() {
             @Override
             public void visit(UserCounter userCounter) {
                 try {
-                    List<UserCounter> userCounters = countTree.find(userCounter.getCounter());
+                    MyList<UserCounter> userCounters = countTree.find(userCounter.getCounter());
                     userCounters.add(userCounter);
                 } catch (KeyNotInTree e) {
-                    ArrayList<UserCounter> userCounters = new ArrayList<>();
+                    MyList<UserCounter> userCounters = new MyLinkedListImpl<>();
                     userCounters.add(userCounter);
                     countTree.add(userCounter.getCounter(), userCounters);
                 }
@@ -54,16 +56,28 @@ public class UsersWithMoreTweets implements TweetRecordCallback{
         return result;
     }
 
-    private void calculateFifteenMost(Node<Long, List<UserCounter>> node) {
+    private void calculateFifteenMost(Node<Long, MyList<UserCounter>> node) {
         if (node.getRight() != null) {
             calculateFifteenMost(node.getRight());
         }
         if (result.size() == limit)
             return;
-        for (UserCounter userCounter : node.getValue()) {
+
+        for (int i = 0; i < node.getValue().size(); i++) {
+            if (result.size() < limit) {
+                try {
+                    result.add(node.getValue().get(i));
+                } catch (EmptyListException e) {
+                    e.printStackTrace();
+                } catch (OutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        /*for (UserCounter userCounter : node.getValue()) {
             if (result.size() < limit)
                 result.add(userCounter);
-        }
+        }*/
 
         if (node.getLeft() != null) {
             calculateFifteenMost(node.getLeft());

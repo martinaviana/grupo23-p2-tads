@@ -1,18 +1,24 @@
 package uy.edu.um.prog2.tad.f1;
 
-import org.apache.commons.csv.CSVRecord;
+import  org.apache.commons.csv.CSVRecord;
 import uy.edu.um.prog2.tad.binaryTree.MyBinarySearchTreeImpl;
+import uy.edu.um.prog2.tad.binaryTree.MySearchBinaryTreeVisitor;
 import uy.edu.um.prog2.tad.binaryTree.Node;
 import uy.edu.um.prog2.tad.exceptions.EmptyListException;
+import uy.edu.um.prog2.tad.exceptions.KeyNotInTree;
 import uy.edu.um.prog2.tad.exceptions.OutOfBoundsException;
 import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
+import uy.edu.um.prog2.tad.linkedlist.MyList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Favoritos implements TweetRecordCallback {
 
-    private MyLinkedListImpl<Node<Integer, String>> result = new MyLinkedListImpl<>();
+    private MyBinarySearchTreeImpl<String, UserFavourites> tree = new MyBinarySearchTreeImpl<>();
+    private MyLinkedListImpl<UserFavourites> result = new MyLinkedListImpl<>();
 
 
     @Override
@@ -21,38 +27,64 @@ public class Favoritos implements TweetRecordCallback {
             String favourites = record.get("user_favourites");
             double parseFavourites = Double.parseDouble(favourites);
             int parseFavouritesInt = (int) Math.round(parseFavourites);
-            Node<Integer, String> node = new Node(parseFavouritesInt, record.get("user_name"));
-            result.add(node);
-            calculate7Most();
+            try {
+                UserFavourites userFavourites = tree.find(record.get("user_name"));
+                userFavourites.add(parseFavouritesInt);
+            }catch (KeyNotInTree e) {
+                tree.add(record.get("user_name"), new UserFavourites(record.get("user_name"), parseFavouritesInt));
+            }
         } catch (NumberFormatException e) {
 
         }
     }
 
-    private void calculate7Most() {
-        for (int i = 0; i < result.size(); i++) {
-            for (int j = 0; j < result.size() - i - 1; j++) {
-                try {
-                    if (result.get(j).getKey() < result.get(j + 1).getKey()) {
-                        Node<Integer, String> temp = result.get(j);
-                        Node<Integer, String> temp2 = result.get(j + 1);
-                        result.get(j).setKey(temp2.getKey());
-                        result.get(j).setValue(temp2.getValue());
-                        result.get(j + 1).setKey(temp.getKey());
-                        result.get(j + 1).setValue(temp.getValue());
+    public MyList<UserFavourites> sortFavourites() throws OutOfBoundsException, EmptyListException {
 
-                    }
+        MyBinarySearchTreeImpl<Integer, MyList<UserFavourites>> favouriteUsersTree = new MyBinarySearchTreeImpl<>();
+
+        tree.visit(new MySearchBinaryTreeVisitor<UserFavourites>() {
+            @Override
+            public void visit(UserFavourites userFavourites) {
+                try {
+                    MyList<UserFavourites> userFavouritesMyList = favouriteUsersTree.find(userFavourites.getFavouritesNum());
+                    userFavouritesMyList.add(userFavourites);
+                } catch (KeyNotInTree e) {
+                    MyList<UserFavourites> userCounters = new MyLinkedListImpl<>();
+                    userCounters.add(userFavourites);
+                    favouriteUsersTree.add(userFavourites.getFavouritesNum(), userCounters);
+                }
+            }
+        });
+
+        calculate7Most(favouriteUsersTree.getRoot());
+
+        return result;
+    }
+
+    private void calculate7Most(Node<Integer, MyList<UserFavourites>> node) {
+        if (node.getRight() != null) {
+            calculate7Most(node.getRight());
+        }
+        if (result.size() == 7)
+            return;
+
+        for (int i = 0; i < node.getValue().size(); i++) {
+            if (result.size() < 7) {
+                try {
+                    result.add(node.getValue().get(i));
                 } catch (EmptyListException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 } catch (OutOfBoundsException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
         }
-    }
 
-    public MyLinkedListImpl<Node<Integer, String>> getFavoritos() {
-        return result;
+        if (node.getLeft() != null) {
+            calculate7Most(node.getLeft());
+        } else {
+            return;
+        }
     }
 }
 

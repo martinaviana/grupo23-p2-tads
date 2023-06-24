@@ -1,4 +1,5 @@
 import uy.edu.um.prog2.tad.binaryTree.MyBinarySearchTreeImpl;
+import uy.edu.um.prog2.tad.binaryTree.Node;
 import uy.edu.um.prog2.tad.f1.*;
 import uy.edu.um.prog2.tad.hash.ClosedHashImpl;
 import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
@@ -21,10 +22,10 @@ public class Main {
         while (!quit) {
             System.out.println("1. Listar los 10 pilotos activos en la temporada 2023 más mencionados en los tweets en un mes");
             System.out.println("2. Top 15 usuarios con más tweets");
-            System.out.println("3. ");
-            System.out.println("4. ");
-            System.out.println("5. ");
-            System.out.println("6. ");
+            System.out.println("3. Cantidad de hashtags distintos para un día dado");
+            System.out.println("4. Hashtag más usado para un día dado");
+            System.out.println("5. Top 7 cuentas con más favoritos");
+            System.out.println("6. Cantidad de tweets con una palabra o frase específicos");
             System.out.println("7. Salir del programa");
 
             int input = inputReader.nextInt();
@@ -35,8 +36,6 @@ public class Main {
 
             switch (input) {
                 case 1:
-
-
                     try {
                         System.out.println("Ingrese el año en formato YYYY");
                         year = inputReader.nextInt();
@@ -165,9 +164,11 @@ public class Main {
         Favoritos favoritos= new Favoritos();
         TweetsReader tweetReader = new TweetsReader(reader, favoritos);
         tweetReader.read();
-        System.out.println(favoritos.getFavoritos().size());
-        for (int i=0; i<favoritos.getFavoritos().size(); i++){
-            System.out.println(i+1 + ". " + favoritos.getFavoritos().get(i).getValue() + " con " + favoritos.getFavoritos().get(i).getKey() + " favoritos");
+        MyList<UserFavourites> list = favoritos.sortFavourites();
+
+
+        for (int i=0; i<list.size(); i++){
+            System.out.println(i+1 + ". " + list.get(i));
         }
 
         System.out.println("\n");
