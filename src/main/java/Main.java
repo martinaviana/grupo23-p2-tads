@@ -81,7 +81,7 @@ public class Main {
                     fourthQuery(year, month, day);
                     break;
                 case 5:
-                    break;
+                    fithQuery();
                 case 6:
                     break;
                 case 7:
@@ -156,6 +156,17 @@ public class Main {
         TweetsReader tweetReader = new TweetsReader(reader, temp);
         tweetReader.read();
         System.out.println(temp.getMaxHashtag().hashtag);
+
+
+    }
+    private static void fithQuery() throws Exception {
+        Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
+        Favoritos favoritos= new Favoritos();
+        TweetsReader tweetReader = new TweetsReader(reader, favoritos);
+        tweetReader.read();
+        for (int i=0; i<favoritos.getFavoritos().size(); i++){
+            System.out.println(favoritos.getFavoritos().get(i));
+        }
 
 
     }
