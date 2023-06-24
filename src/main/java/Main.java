@@ -29,11 +29,14 @@ public class Main {
 
             int input = inputReader.nextInt();
             inputReader.nextLine();
+            int month = 0;
+            int year = 0;
+            int day=0;
             
             switch (input) {
                 case 1:
-                    int month = 0;
-                    int year = 0;
+
+
 
                     try {
                         System.out.println("Ingrese el año en formato YYYY");
@@ -53,7 +56,18 @@ public class Main {
                 case 3:
                     break;
                 case 4:
-                    break;
+                    try {
+                        System.out.println("Ingrese el año en formato YYYY");
+                        year = inputReader.nextInt();
+                        System.out.println("Ingrese el mes en formato MM");
+                        month = inputReader.nextInt();
+                        System.out.println("Ingrese el dia en formato DD");
+                        day = inputReader.nextInt();
+                    }catch (InputMismatchException e) {
+                        System.out.println("Revise la entrada");
+                        break;
+                    }
+                    fourthQuery(year, month, day);
                 case 5:
                     break;
                 case 6:
@@ -111,5 +125,13 @@ public class Main {
         }
 
     }
+        private static void fourthQuery(int year,int  month, int day) throws Exception {
+            Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
+            HashtagUsageAnalyzer temp =new HashtagUsageAnalyzer(year,month,day);
+            TweetsReader tweetReader = new TweetsReader(reader,temp);
+            tweetReader.read();
+            System.out.println(temp.getHashtagCounters().size());
 
-}
+
+        }}
+

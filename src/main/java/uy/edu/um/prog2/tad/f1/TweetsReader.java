@@ -24,8 +24,10 @@ public class TweetsReader {
 
         Iterable<CSVRecord> records = csvFormat.parse(reader);
 
-        for (CSVRecord record : records)
+        for (CSVRecord record : records){
+            System.out.println("Linea: " + record.get("line_number"));
             callback.execute(record);
+        }
 
     }
 }
