@@ -12,13 +12,21 @@ import java.time.format.DateTimeParseException;
 
 public class Favoritos implements TweetRecordCallback {
 
-private MyLinkedListImpl<Node<Integer, String>> result = new MyLinkedListImpl();
+    private MyLinkedListImpl<Node<Integer, String>> result = new MyLinkedListImpl<>();
 
     private MyBinarySearchTreeImpl<Integer ,String> arbolFavoritos= new MyBinarySearchTreeImpl<>();
+
     @Override
     public void execute(CSVRecord record) {
-        arbolFavoritos.add(Integer.valueOf(record.get("user_favourites")), record.get("user_name"));
+        try {
+            String favourites = record.get("user_favourites");
+            double parseFavourites = Double.parseDouble(favourites);
+            int parseFavouritesInt = (int) Math.round(parseFavourites);
+            arbolFavoritos.add(parseFavouritesInt, record.get("user_name"));
+            aux();
+        }catch (NumberFormatException e) {
 
+        }
     }
     private void calculate7Most(Node<Integer, String> node) {
 
@@ -27,7 +35,8 @@ private MyLinkedListImpl<Node<Integer, String>> result = new MyLinkedListImpl();
         }
         if (result.size() == 7)
             return;
-        result.add(node);
+        if (!result.contains(node))
+            result.add(node);
 
         if (node.getLeft() != null) {
             calculate7Most(node.getLeft());

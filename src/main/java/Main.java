@@ -82,6 +82,7 @@ public class Main {
                     break;
                 case 5:
                     fithQuery();
+                    break;
                 case 6:
                     break;
                 case 7:
@@ -164,11 +165,12 @@ public class Main {
         Favoritos favoritos= new Favoritos();
         TweetsReader tweetReader = new TweetsReader(reader, favoritos);
         tweetReader.read();
+        System.out.println(favoritos.getFavoritos().size());
         for (int i=0; i<favoritos.getFavoritos().size(); i++){
-            System.out.println(favoritos.getFavoritos().get(i));
+            System.out.println(i+1 + ". " + favoritos.getFavoritos().get(i).getValue() + " con " + favoritos.getFavoritos().get(i).getKey() + " favoritos");
         }
 
-
+        System.out.println("\n");
     }
 }
 
