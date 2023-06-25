@@ -1,17 +1,14 @@
 import uy.edu.um.prog2.tad.binaryTree.MyBinarySearchTreeImpl;
-import uy.edu.um.prog2.tad.binaryTree.Node;
 import uy.edu.um.prog2.tad.f1.*;
-import uy.edu.um.prog2.tad.hash.ClosedHashImpl;
 import uy.edu.um.prog2.tad.linkedlist.MyLinkedListImpl;
 import uy.edu.um.prog2.tad.linkedlist.MyList;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -80,9 +77,18 @@ public class Main {
                     fourthQuery(year, month, day);
                     break;
                 case 5:
-                    fithQuery();
+                    fifthQuery();
                     break;
                 case 6:
+                    String toSearch = null;
+                    try {
+                        System.out.println("Ingrese la palabra o frase a contar: ");
+                        toSearch = inputReader.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Revise la entrada");
+                        break;
+                    }
+                    sixthQuery(toSearch);
                     break;
                 case 7:
                     quit = true;
@@ -159,7 +165,7 @@ public class Main {
 
 
     }
-    private static void fithQuery() throws Exception {
+    private static void fifthQuery() throws Exception {
         Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
         Favoritos favoritos= new Favoritos();
         TweetsReader tweetReader = new TweetsReader(reader, favoritos);
@@ -172,6 +178,16 @@ public class Main {
         }
 
         System.out.println("\n");
+    }
+
+    private static void sixthQuery(String toSearch) throws Exception {
+        Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
+        TweetsWithSpecificString tweetsWithSpecificString = new TweetsWithSpecificString(toSearch);
+        TweetsReader tweetReader = new TweetsReader(reader, tweetsWithSpecificString);
+        tweetReader.read();
+        long counter =  tweetsWithSpecificString.getStringCounter();
+
+        System.out.println("La palabra o frase " + toSearch + " ha aparecido " + counter + " veces \n");
     }
 }
 
