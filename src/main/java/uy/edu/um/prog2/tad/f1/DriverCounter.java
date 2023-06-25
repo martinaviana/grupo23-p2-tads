@@ -1,12 +1,10 @@
 package uy.edu.um.prog2.tad.f1;
 
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @RequiredArgsConstructor
 @ToString
+@Getter
 public class DriverCounter {
     @NonNull private Driver driver;
     long counter;

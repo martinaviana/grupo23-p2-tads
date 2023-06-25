@@ -120,14 +120,15 @@ public class Main {
 
         MyList<DriverCounter> list = tenMoreActiveDrivers.sortDriverCounters();
         for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
+            System.out.println((i+1) + ". " + list.get(i).getDriver().getFullName() + " con " + list.get(i).getCounter() + " menciones");
         }
-
+        System.out.println("");
         time = System.currentTimeMillis() - time;
-        System.out.println(time);
+        System.out.println("El proceso demoro " + time + " milisegundos\n");
     }
 
     private static void secondQuery() throws Exception {
+        long time = System.currentTimeMillis();
         Reader reader = new FileReader("f1_dataset.csv");
 
         UsersWithMoreTweets fifteenUsersWithMoreTweets = new UsersWithMoreTweets(new MyBinarySearchTreeImpl<>(), 15);
@@ -139,12 +140,15 @@ public class Main {
         MyList<UserCounter> list = fifteenUsersWithMoreTweets.sortUserMoreTweets();
 
         for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
+            System.out.println((i+1) + ". " + list.get(i).getUserName() + " con " + list.get(i).getCounter() + " tweets");
         }
-
+        System.out.println("");
+        time = System.currentTimeMillis() - time;
+        System.out.println("El proceso demoro " + time + " milisegundos\n");
     }
 
     private static void thirdQuery(int year, int month, int day) throws Exception {
+        long time = System.currentTimeMillis();
         Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
         DifferentHashtagsInDay temp = new DifferentHashtagsInDay(new MyLinkedListImpl<>(), year, month, day);
         TweetsReader tweetReader = new TweetsReader(reader, temp);
@@ -154,18 +158,23 @@ public class Main {
             System.out.println(temp.getHashTagCounter().get(i));
         }
         System.out.println(temp.getHashTags());
+        time = System.currentTimeMillis() - time;
+        System.out.println("El proceso demoro " + time + " milisegundos");
     }
 
     private static void fourthQuery(int year, int month, int day) throws Exception {
+        long time = System.currentTimeMillis();
         Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
         HashtagUsageAnalyzer temp = new HashtagUsageAnalyzer(year, month, day);
         TweetsReader tweetReader = new TweetsReader(reader, temp);
         tweetReader.read();
         System.out.println(temp.getMaxHashtag().hashtag);
 
-
+        time = System.currentTimeMillis() - time;
+        System.out.println("El proceso demoro " + time + " milisegundos");
     }
     private static void fifthQuery() throws Exception {
+        long time = System.currentTimeMillis();
         Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
         Favoritos favoritos= new Favoritos();
         TweetsReader tweetReader = new TweetsReader(reader, favoritos);
@@ -178,9 +187,12 @@ public class Main {
         }
 
         System.out.println("\n");
+        time = System.currentTimeMillis() - time;
+        System.out.println("El proceso demoro " + time + " milisegundos");
     }
 
     private static void sixthQuery(String toSearch) throws Exception {
+        long time = System.currentTimeMillis();
         Reader reader = new FileReader("f1_dataset.csv"); // paso archivo que va a leer
         TweetsWithSpecificString tweetsWithSpecificString = new TweetsWithSpecificString(toSearch);
         TweetsReader tweetReader = new TweetsReader(reader, tweetsWithSpecificString);
@@ -188,6 +200,8 @@ public class Main {
         long counter =  tweetsWithSpecificString.getStringCounter();
 
         System.out.println("La palabra o frase '" + toSearch + "' ha aparecido " + counter + " veces \n");
+        time = System.currentTimeMillis() - time;
+        System.out.println("El proceso demoro " + time + " milisegundos");
     }
 }
 
