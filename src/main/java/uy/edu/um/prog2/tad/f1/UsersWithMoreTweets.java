@@ -74,10 +74,6 @@ public class UsersWithMoreTweets implements TweetRecordCallback{
                 }
             }
         }
-        /*for (UserCounter userCounter : node.getValue()) {
-            if (result.size() < limit)
-                result.add(userCounter);
-        }*/
 
         if (node.getLeft() != null) {
             calculateFifteenMost(node.getLeft());
