@@ -187,7 +187,7 @@ public class Main {
         tweetReader.read();
         long counter =  tweetsWithSpecificString.getStringCounter();
 
-        System.out.println("La palabra o frase " + toSearch + " ha aparecido " + counter + " veces \n");
+        System.out.println("La palabra o frase '" + toSearch + "' ha aparecido " + counter + " veces \n");
     }
 }
 
